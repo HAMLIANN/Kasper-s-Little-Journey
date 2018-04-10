@@ -29,7 +29,7 @@ namespace Kasper_s_Little_Journey
 			bulletList = new List<Bullet>();
 			health = 5;
 			currentDiffiultyLevel = 1;
-			bulletDelay = 70;
+			bulletDelay = 40;
 			speed = 5;
 			isVisible = true;
 		}
@@ -123,7 +123,7 @@ namespace Kasper_s_Little_Journey
 			//reset bulletDealy
 			if (bulletDelay <= 0)
 			{
-				bulletDelay = 70;
+				bulletDelay = 40;
 			}
 		}
 	}
