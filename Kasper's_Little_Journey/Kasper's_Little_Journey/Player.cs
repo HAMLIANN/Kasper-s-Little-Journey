@@ -91,7 +91,7 @@ namespace Kasper_s_Little_Journey
 				// reset bulletdelay
 				if (bulletDelay <= 0)
 				{
-					bulletDelay = 20;
+					bulletDelay = 17;
 				}
 			}
 		}
