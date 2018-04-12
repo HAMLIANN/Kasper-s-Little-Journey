@@ -104,3 +104,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Georgia.spritefont
 
+#begin theme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:theme.mp3
+

@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Kasper_s_Little_Journey
 {
@@ -23,6 +25,7 @@ namespace Kasper_s_Little_Journey
 		Background bg = new Background();
 		HUD hud = new HUD();
 
+        SoundManager sm = new SoundManager();
 
 		public Game1()
         {
@@ -49,6 +52,8 @@ namespace Kasper_s_Little_Journey
 			p.LoadContent(Content);
 			bg.LoadContent(Content);
 			hud.LoadContent(Content);
+            sm.LoadContent(Content);
+            MediaPlayer.Play(sm.bgMusic);
         }
 		
 		//UnloadContent
