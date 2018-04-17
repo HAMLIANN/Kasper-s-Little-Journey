@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Kasper_s_Little_Journey
 {
@@ -18,10 +19,12 @@ namespace Kasper_s_Little_Journey
 		// list
 		List<Homework> homeworkList = new List<Homework>();
 		List<Enemy> enemyList = new List<Enemy>();
+		List<Explosion> explosionList = new List<Explosion>();
 
 		Player p = new Player();
 		Background bg = new Background();
 		HUD hud = new HUD();
+		SoundManager sm = new SoundManager();
 
 
 		public Game1()
@@ -49,6 +52,8 @@ namespace Kasper_s_Little_Journey
 			p.LoadContent(Content);
 			bg.LoadContent(Content);
 			hud.LoadContent(Content);
+			sm.LoadContent(Content);
+			MediaPlayer.Play(sm.bgMusic);
         }
 		
 		//UnloadContent
@@ -88,6 +93,8 @@ namespace Kasper_s_Little_Journey
 				{
 					if (p.bulletList[i].boundingBox.Intersects(e.boundingBox))
 					{
+						sm.enemyHitSound.Play();
+						explosionList.Add(new Explosion(Content.Load<Texture2D>("Explosions"), new Vector2(e.position.X, e.position.Y)));
 						p.bulletList[i].isVisible = false;
 						e.isVisible = false;
 						hud.playerScore += 20;
@@ -96,7 +103,10 @@ namespace Kasper_s_Little_Journey
 
 				e.Update(gameTime);
 			}
-
+			foreach (Explosion ex in explosionList)
+			{
+				ex.Update(gameTime);
+			}
 			//for each homework in homeworkList, update it and check for collisions
 			foreach (Homework h in homeworkList)
 			{
@@ -113,6 +123,8 @@ namespace Kasper_s_Little_Journey
 				{
 					if (h.boundingBox.Intersects(p.bulletList[i].boundingBox))
 					{
+						sm.enemyHitSound.Play();
+						explosionList.Add(new Explosion(Content.Load<Texture2D>("Explosions"), new Vector2(h.position.X, h.position.Y)));
 						hud.playerScore += 5;
 						h.isVisible = false;
 						p.bulletList.ElementAt(i).isVisible = false;
@@ -123,6 +135,7 @@ namespace Kasper_s_Little_Journey
 			}
 			p.Update(gameTime);
 			bg.Update(gameTime);
+			ManageExplosion();
 			//hud.Update(gameTime);
 			LoadHomeWork();
 			LoadEnemies();
@@ -139,6 +152,10 @@ namespace Kasper_s_Little_Journey
 			bg.Draw(spriteBatch);
 			p.Draw(spriteBatch);
 			hud.Draw(spriteBatch);
+			foreach (Explosion ex in explosionList)
+			{
+				ex.Draw(spriteBatch);
+			}
 			foreach (Homework h in homeworkList)
 			{
 				h.Draw(spriteBatch);
@@ -190,17 +207,25 @@ namespace Kasper_s_Little_Journey
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("EliasHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
 
-			if (hud.playerScore >= 1000 && hud.playerScore <= 1010)
-			{
-				enemyList.Add(new Enemy(Content.Load<Texture2D>("VendelaHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
-			}
-
 			// if any of the Enemy in the list were destroyed(or invisible), then remove them from the list
 			for (int i = 0; i < enemyList.Count; i++)
 			{
 				if (!enemyList[i].isVisible)
 				{
 					enemyList.RemoveAt(i);
+					i--;
+				}
+			}
+		}
+		//Manange explosion
+		public void ManageExplosion()
+		{
+			// if any of the explosion in the list were destroyed(or invisible), then remove them from the list
+			for (int i = 0; i < explosionList.Count; i++)
+			{
+				if (!explosionList[i].isVisible)
+				{
+					explosionList.RemoveAt(i);
 					i--;
 				}
 			}
