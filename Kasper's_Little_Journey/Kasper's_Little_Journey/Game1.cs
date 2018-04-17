@@ -4,14 +4,19 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Audio;
 
 namespace Kasper_s_Little_Journey
 {
 	//Main
     public class Game1 : Game
     {
+        // State Enum
+        public enum State
+        {
+            Menu,
+            Playing,
+            Gameover
+        }
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 		Random random = new Random();
@@ -20,12 +25,14 @@ namespace Kasper_s_Little_Journey
 		// list
 		List<Homework> homeworkList = new List<Homework>();
 		List<Enemy> enemyList = new List<Enemy>();
+		List<Explosion> explosionList = new List<Explosion>();
 
 		Player p = new Player();
 		Background bg = new Background();
 		HUD hud = new HUD();
-
-        SoundManager sm = new SoundManager();
+        // Set first State
+        State gameState = State.Menu;
+        public Texture2D menuImage;
 
 		public Game1()
         {
@@ -36,6 +43,7 @@ namespace Kasper_s_Little_Journey
 			this.Window.Title = "Kasper´s Little Journey";
             Content.RootDirectory = "Content";
 			enemyBulletDamage = 10;
+            menuImage = null;
         }
 
 		//Initialize
@@ -52,8 +60,7 @@ namespace Kasper_s_Little_Journey
 			p.LoadContent(Content);
 			bg.LoadContent(Content);
 			hud.LoadContent(Content);
-            sm.LoadContent(Content);
-            MediaPlayer.Play(sm.bgMusic);
+            menuImage = Content.Load<Texture2D>("");
         }
 		
 		//UnloadContent
@@ -67,27 +74,31 @@ namespace Kasper_s_Little_Journey
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            // Updating playing state
+            switch (gameState)
+            {
+                case State.Playing:
+                    {
+                        sf.speed = 5;
+                        //updating enemy
+                        foreach (Enemy e in enemyList)
+                        {
+                            //check if enemyship is colliding with player
+                            if (e.boundingBox.Intersects(p.boundingBox))
+                            {
+                                p.health -= 40;
+                                e.isVisible = false;
+                            }
 
-			//updating enemy
-			foreach (Enemy e in enemyList)
-			{
-				//check if enemyship is colliding with player
-				if (e.boundingBox.Intersects(p.boundingBox))
-				{
-					p.health -= 40;
-					e.isVisible = false;
-				}
-
-				//check enemy bullet collision with player ship
-				for (int i = 0; i < e.bulletList.Count; i++)
-				{
-					if (p.boundingBox.Intersects(e.bulletList[i].boundingBox))
-					{
-                        sm.playerHitSound.Play();
-						p.health -= enemyBulletDamage;
-						e.bulletList[i].isVisible = false;
-					}
-				}
+                            //check enemy bullet collision with player ship
+                            for (int i = 0; i < e.bulletList.Count; i++)
+                            {
+                                if (p.boundingBox.Intersects(e.bulletList[i].boundingBox))
+                                {
+                                    p.health -= enemyBulletDamage;
+                                    e.bulletList[i].isVisible = false;
+                                }
+                            }
 
 				//check player bullet collision to enemy 
 				for (int i = 0; i < p.bulletList.Count; i++)
@@ -104,16 +115,16 @@ namespace Kasper_s_Little_Journey
 				e.Update(gameTime);
 			}
 
-			//for each homework in homeworkList, update it and check for collisions
-			foreach (Homework h in homeworkList)
-			{
+                        //for each homework in homeworkList, update it and check for collisions
+                        foreach (Homework h in homeworkList)
+                        {
 
-				//check if homework is colliding with KasperHead, if they are... set isVisible to false(remove them from homerworkList
-				if (h.boundingBox.Intersects(p.boundingBox))
-				{
-					p.health -= 20;
-					h.isVisible = false;
-				}
+                            //check if homework is colliding with KasperHead, if they are... set isVisible to false(remove them from homerworkList
+                            if (h.boundingBox.Intersects(p.boundingBox))
+                            {
+                                p.health -= 20;
+                                h.isVisible = false;
+                            }
 
 				//Iterate through our bulletList if any  homework come in contacts with these bullet, destroyed bullet and homework
 				for (int i = 0; i < p.bulletList.Count; i++)
@@ -143,10 +154,49 @@ namespace Kasper_s_Little_Journey
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-			spriteBatch.Begin();
+            switch (gameState)
+            {
+                case State.Playing:
+                    {
+                         sf.draw
+            
+                         p.draw
+                         alla draw saker
+                            bg.Draw(spriteBatch);
+                        p.Draw(spriteBatch);
+                        hud.Draw(spriteBatch);
+                        foreach (Homework h in homeworkList)
+                        {
+                            h.Draw(spriteBatch);
+                        }
+
+                        foreach (Enemy e in enemyList)
+                        {
+                            e.Draw(spriteBatch);
+                        }
+                        break;
+                    }
+                case State.Menu:
+                    {
+                        sf.Draw(spriteBatch);
+                        spriteBatch.Draw(menuImage, new Vector2(0, 0), Color.White);
+                        break;
+                    }
+                case State.Gameover:
+                    {
+                        break;
+                    }
+            }
+
+
+            spriteBatch.Begin();
 			bg.Draw(spriteBatch);
 			p.Draw(spriteBatch);
 			hud.Draw(spriteBatch);
+			foreach (Explosion ex in explosionList)
+			{
+				ex.Draw(spriteBatch);
+			}
 			foreach (Homework h in homeworkList)
 			{
 				h.Draw(spriteBatch);
@@ -198,7 +248,7 @@ namespace Kasper_s_Little_Journey
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("EliasHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
 
-			if (hud.playerScore >= 1000 && hud.playerScore <= 1010)
+			if (hud.playerScore >= 1000 && hud.playerScore <= 1050 || hud.playerScore >= 2000 && hud.playerScore <= 2050)
 			{
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("VendelaHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
@@ -209,6 +259,19 @@ namespace Kasper_s_Little_Journey
 				if (!enemyList[i].isVisible)
 				{
 					enemyList.RemoveAt(i);
+					i--;
+				}
+			}
+		}
+		//Manage explosion
+		public void ManageExpolsion()
+		{
+			// if any of the Explosopn in the list were destroyed(or invisible), then remove them from the list
+			for (int i = 0; i < explosionList.Count; i++)
+			{
+				if (!explosionList[i].isVisible)
+				{
+					explosionList.RemoveAt(i);
 					i--;
 				}
 			}
