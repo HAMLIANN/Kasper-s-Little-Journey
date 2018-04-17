@@ -100,20 +100,20 @@ namespace Kasper_s_Little_Journey
                                 }
                             }
 
-				//check player bullet collision to enemy 
-				for (int i = 0; i < p.bulletList.Count; i++)
-				{
-					if (p.bulletList[i].boundingBox.Intersects(e.boundingBox))
-					{
-                        sm.enemyHitSound.Play();
-						p.bulletList[i].isVisible = false;
-						e.isVisible = false;
-						hud.playerScore += 20;
-					}
-				}
+                            //check player bullet collision to enemy 
+                            for (int i = 0; i < p.bulletList.Count; i++)
+                            {
+                                if (p.bulletList[i].boundingBox.Intersects(e.boundingBox))
+                                {
+                                    p.bulletList[i].isVisible = false;
+                                    e.isVisible = false;
+                                    hud.playerScore += 20;
+                                }
+                            }
 
-				e.Update(gameTime);
-			}
+
+                            e.Update(gameTime);
+                        }
 
                         //for each homework in homeworkList, update it and check for collisions
                         foreach (Homework h in homeworkList)
@@ -124,29 +124,58 @@ namespace Kasper_s_Little_Journey
                             {
                                 p.health -= 20;
                                 h.isVisible = false;
+
+                                //check if homework is colliding with KasperHead, if they are... set isVisible to false(remove them from homerworkList
+                                if (h.boundingBox.Intersects(p.boundingBox))
+                                {
+                                    p.health -= 20;
+                                    h.isVisible = false;
+                                }
+
+                                //Iterate through our bulletList if any  homework come in contacts with these bullet, destroyed bullet and homework
+                                for (int i = 0; i < p.bulletList.Count; i++)
+                                {
+                                    if (h.boundingBox.Intersects(p.bulletList[i].boundingBox))
+                                    {
+                                        hud.playerScore += 5;
+                                        h.isVisible = false;
+                                        p.bulletList.ElementAt(i).isVisible = false;
+                                    }
+
+                                }
+
+                                h.Update(gameTime);
                             }
+                            p.Update(gameTime);
+                            bg.Update(gameTime);
+                            //hud.Update(gameTime);
+                            LoadHomeWork();
+                            LoadEnemies();
+                            //UPdating enemy alla de raderna
+                            break;
+                        }
+                    }
+                //updating menu state
+                case State.Menu:
+                    {
+                        KeyboardState keyState = Keyboard.GetState();
+                        if (keyState.IsKeyDown(Keys.Enter))
+                        {
+                            gameState = State.Playing;
+                        }
+                        sf.Update(gameTime);
+                        sf.speed = 1;
+                        break;
+                    }
+                //updating gameover state
+                case State.Gameover:
+                    {
+                        break;
+                    }
 
-				//Iterate through our bulletList if any  homework come in contacts with these bullet, destroyed bullet and homework
-				for (int i = 0; i < p.bulletList.Count; i++)
-				{
-					if (h.boundingBox.Intersects(p.bulletList[i].boundingBox))
-					{
-                        sm.enemyHitSound.Play();
-						hud.playerScore += 5;
-						h.isVisible = false;
-						p.bulletList.ElementAt(i).isVisible = false;
-					}
-				}
 
-				h.Update(gameTime);
-			}
-			p.Update(gameTime);
-			bg.Update(gameTime);
-			//hud.Update(gameTime);
-			LoadHomeWork();
-			LoadEnemies();
 
-			base.Update(gameTime);
+            base.Update(gameTime);
         }
 
 		//Draw
