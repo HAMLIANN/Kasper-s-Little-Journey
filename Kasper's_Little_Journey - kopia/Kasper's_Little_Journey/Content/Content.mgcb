@@ -116,17 +116,11 @@
 /processorParam:TextureFormat=Color
 /build:VendelaHead.png
 
-#begin theme.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:theme.mp3
-
-#begin shootSound.wav
+#begin enemyHitSound.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:shootSound.wav
+/build:enemyHitSound.wav
 
 #begin playerHitSound.wav
 /importer:WavImporter
@@ -134,11 +128,17 @@
 /processorParam:Quality=Best
 /build:playerHitSound.wav
 
-#begin enemyHitSound.wav
+#begin shootSound.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:enemyHitSound.wav
+/build:shootSound.wav
+
+#begin theme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:theme.mp3
 
 #begin Explosions.png
 /importer:TextureImporter

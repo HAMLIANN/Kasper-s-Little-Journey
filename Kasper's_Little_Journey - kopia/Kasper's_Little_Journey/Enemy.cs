@@ -33,7 +33,6 @@ namespace Kasper_s_Little_Journey
 			speed = 5;
 			isVisible = true;
 		}
-
 		//Update
 		public void Update(GameTime gameTime)
 		{
