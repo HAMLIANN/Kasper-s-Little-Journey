@@ -83,6 +83,7 @@ namespace Kasper_s_Little_Journey
 				{
 					if (p.boundingBox.Intersects(e.bulletList[i].boundingBox))
 					{
+                        sm.playerHitSound.Play();
 						p.health -= enemyBulletDamage;
 						e.bulletList[i].isVisible = false;
 					}
@@ -93,7 +94,7 @@ namespace Kasper_s_Little_Journey
 				{
 					if (p.bulletList[i].boundingBox.Intersects(e.boundingBox))
 					{
-                        sm.hitSound.Play();
+                        sm.enemyHitSound.Play();
 						p.bulletList[i].isVisible = false;
 						e.isVisible = false;
 						hud.playerScore += 20;
@@ -119,7 +120,7 @@ namespace Kasper_s_Little_Journey
 				{
 					if (h.boundingBox.Intersects(p.bulletList[i].boundingBox))
 					{
-                        sm.hitSound.Play();
+                        sm.enemyHitSound.Play();
 						hud.playerScore += 5;
 						h.isVisible = false;
 						p.bulletList.ElementAt(i).isVisible = false;
