@@ -14,16 +14,22 @@ namespace Kasper_s_Little_Journey
 {
     public class SoundManager
     {
+        public SoundEffect shootSound;
+        public SoundEffect hitSound;
         public Song bgMusic;
 
         // Constructor
         public SoundManager()
         {
+            shootSound = null;
+            hitSound = null;
             bgMusic = null;
         }
 
         public void LoadContent(ContentManager Content)
         {
+            shootSound = Content.Load<SoundEffect>("shootSound");
+            hitSound = Content.Load<SoundEffect>("hitSound");
             bgMusic = Content.Load<Song>("theme");
         }
     }

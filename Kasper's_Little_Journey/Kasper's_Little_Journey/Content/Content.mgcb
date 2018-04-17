@@ -122,3 +122,15 @@
 /processorParam:Quality=Best
 /build:theme.mp3
 
+#begin shootSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:shootSound.wav
+
+#begin hitSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:hitSound.wav
+
