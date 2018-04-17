@@ -198,7 +198,7 @@ namespace Kasper_s_Little_Journey
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("EliasHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
 
-			if (hud.playerScore >= 1000 && hud.playerScore <= 1010)
+			if (hud.playerScore >= 1000 && hud.playerScore <= 1050 || hud.playerScore >= 2000 && hud.playerScore <= 2050)
 			{
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("VendelaHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
