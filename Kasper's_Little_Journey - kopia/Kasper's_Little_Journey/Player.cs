@@ -20,7 +20,7 @@ namespace Kasper_s_Little_Journey
 		public Rectangle boundingBox, healthRectangle;
 		public bool isColliding;
 		public List<Bullet> bulletList;
-        SoundManager sm = new SoundManager();
+		SoundManager sm = new SoundManager();
 
 		//Constructor
 		public Player()
@@ -41,7 +41,7 @@ namespace Kasper_s_Little_Journey
 			texture = Content.Load<Texture2D>("KasperHead");
 			bulletTexture = Content.Load<Texture2D>("Pen");
 			healthTexture = Content.Load<Texture2D>("HealthBar");
-            sm.LoadContent(Content);
+			sm.LoadContent(Content);
 		}
 
 		//Draw
@@ -80,7 +80,7 @@ namespace Kasper_s_Little_Journey
 			// if the bulletdelay is att 0: creat new bullet at player position and add to the list
 			if (bulletDelay <= 0)
 			{
-                sm.shootSound.Play();
+				sm.shootSound.Play();
 				Bullet newBullet = new Bullet(bulletTexture);
 				newBullet.posision = new Vector2(position.X + 52 - newBullet.texture.Width / 2, position.Y + 30);
 
