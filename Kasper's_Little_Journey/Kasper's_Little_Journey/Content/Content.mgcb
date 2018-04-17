@@ -104,25 +104,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Georgia.spritefont
 
-<<<<<<< HEAD
-#begin theme.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:theme.mp3
-=======
-#begin MainMenu.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:MainMenu.png
-
 #begin VendelaHead.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -134,5 +115,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:VendelaHead.png
->>>>>>> 2a111a603ba30716ab936ff3149ab4d8d30a705c
+
+#begin theme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:theme.mp3
 
