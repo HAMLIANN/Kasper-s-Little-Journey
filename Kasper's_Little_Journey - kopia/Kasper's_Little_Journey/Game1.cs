@@ -83,6 +83,7 @@ namespace Kasper_s_Little_Journey
 				{
 					if (p.boundingBox.Intersects(e.bulletList[i].boundingBox))
 					{
+                        sm.playerHitSound.Play();
 						p.health -= enemyBulletDamage;
 						e.bulletList[i].isVisible = false;
 					}
