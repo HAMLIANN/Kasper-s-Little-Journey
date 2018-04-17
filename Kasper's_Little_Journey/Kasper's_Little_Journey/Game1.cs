@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Kasper_s_Little_Journey
 {
@@ -33,6 +35,8 @@ namespace Kasper_s_Little_Journey
         State gameState = State.Menu;
         public Texture2D menuImage;
 
+        SoundManager sm = new SoundManager();
+
 		public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -59,7 +63,10 @@ namespace Kasper_s_Little_Journey
 			p.LoadContent(Content);
 			bg.LoadContent(Content);
 			hud.LoadContent(Content);
-            menuImage = Content.Load<Texture2D>("");
+
+            menuImage = Content.Load<Texture2D>("EliasHead");
+            sm.LoadContent(Content);
+            MediaPlayer.Play(sm.bgMusic);
         }
 		
 		//UnloadContent
@@ -68,7 +75,7 @@ namespace Kasper_s_Little_Journey
             
         }
 
-		//Update
+        //Update
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -78,7 +85,7 @@ namespace Kasper_s_Little_Journey
             {
                 case State.Playing:
                     {
-                        sf.speed = 5;
+                        bg.speed = 5;
                         //updating enemy
                         foreach (Enemy e in enemyList)
                         {
@@ -113,6 +120,7 @@ namespace Kasper_s_Little_Journey
                             e.Update(gameTime);
                         }
 
+
                         //for each homework in homeworkList, update it and check for collisions
                         foreach (Homework h in homeworkList)
                         {
@@ -135,6 +143,7 @@ namespace Kasper_s_Little_Journey
                                 }
                             }
 
+
                             h.Update(gameTime);
                         }
                         p.Update(gameTime);
@@ -145,27 +154,7 @@ namespace Kasper_s_Little_Journey
                         //UPdating enemy alla de raderna
                         break;
                     }
-                //updating menu state
-                case State.Menu:
-                    {
-                        KeyboardState keyState = Keyboard.GetState();
-                        if (keyState.IsKeyDown(Keys.Enter))
-                        {
-                            gameState = State.Playing;
-                        }
-                        sf.Update(gameTime);
-                        sf.speed = 1;
-                        break;
-                    }
-                //updating gameover state
-                case State.Gameover:
-                    {
-                        break;
-                    }
-
-                   
-
-			base.Update(gameTime);
+            }
         }
 
 		//Draw
@@ -175,54 +164,36 @@ namespace Kasper_s_Little_Journey
 
             switch (gameState)
             {
-                case State.Playing:
+            case State.Playing:
+                {
+                    //alla draw saker
+                    spriteBatch.Begin();
+                    bg.Draw(spriteBatch);
+                    p.Draw(spriteBatch);
+                    hud.Draw(spriteBatch);
+                    foreach (Homework h in homeworkList)
                     {
-                         sf.draw
-            
-                         p.draw
-                         alla draw saker
-                            bg.Draw(spriteBatch);
-                        p.Draw(spriteBatch);
-                        hud.Draw(spriteBatch);
-                        foreach (Homework h in homeworkList)
-                        {
-                            h.Draw(spriteBatch);
-                        }
-
-                        foreach (Enemy e in enemyList)
-                        {
-                            e.Draw(spriteBatch);
-                        }
-                        break;
+                        h.Draw(spriteBatch);
                     }
+
+                    foreach (Enemy e in enemyList)
+                    {
+                        e.Draw(spriteBatch);
+                    }
+                    spriteBatch.End();
+                    break;
+                }
                 case State.Menu:
-                    {
-                        sf.Draw(spriteBatch);
-                        spriteBatch.Draw(menuImage, new Vector2(0, 0), Color.White);
-                        break;
-                    }
+                {
+                    bg.Draw(spriteBatch);
+                    spriteBatch.Draw(menuImage, new Vector2(0, 0), Color.White);
+                    break;
+                }
                 case State.Gameover:
-                    {
-                        break;
-                    }
+                {
+                    break;
+                }
             }
-
-
-            spriteBatch.Begin();
-			bg.Draw(spriteBatch);
-			p.Draw(spriteBatch);
-			hud.Draw(spriteBatch);
-			foreach (Homework h in homeworkList)
-			{
-				h.Draw(spriteBatch);
-			}
-
-			foreach (Enemy e in enemyList)
-			{
-				e.Draw(spriteBatch);
-			}
-			spriteBatch.End();
-
             base.Draw(gameTime);
         }
 
@@ -263,7 +234,7 @@ namespace Kasper_s_Little_Journey
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("EliasHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
 
-			if (hud.playerScore >= 1000 && hud.playerScore <= 1010)
+			if (hud.playerScore >= 1000 && hud.playerScore <= 1050 || hud.playerScore >= 2000 && hud.playerScore <= 2050)
 			{
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("VendelaHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}

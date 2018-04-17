@@ -34,9 +34,11 @@ namespace Kasper_s_Little_Journey
 		//Draw
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			spriteBatch.Draw(texture, bgPos1, Color.White);
-			spriteBatch.Draw(texture, bgPos2, Color.White);
-		}
+
+            spriteBatch.Draw(texture, bgPos1, Color.White);
+            spriteBatch.Draw(texture, bgPos2, Color.White);
+
+        }
 
 		//Update
 		public void Update(GameTime gameTime)
