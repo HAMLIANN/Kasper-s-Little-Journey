@@ -293,6 +293,12 @@ namespace Kasper_s_Little_Journey
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("EliasHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
 
+			//if there are less than 3 enemies on the screen, then create more untill there is 5 again
+			if (hud.playerScore <= 1000 && hud.playerScore >= 1050 || hud.playerScore <= 2000 && hud.playerScore >= 2050)
+			{
+				enemyList.Add(new Enemy(Content.Load<Texture2D>("VendelaHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
+			}
+
 			// if any of the Enemy in the list were destroyed(or invisible), then remove them from the list
 			for (int i = 0; i < enemyList.Count; i++)
 			{
