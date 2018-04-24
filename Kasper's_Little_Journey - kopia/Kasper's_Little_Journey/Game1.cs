@@ -54,6 +54,7 @@ namespace Kasper_s_Little_Journey
 		//Initialize
         protected override void Initialize()
         {
+
             base.Initialize();
         }
 
@@ -104,6 +105,7 @@ namespace Kasper_s_Little_Journey
                             {
                                 if (p.boundingBox.Intersects(e.bulletList[i].boundingBox))
                                 {
+                                    sm.playerHitSound.Play();
                                     p.health -= enemyBulletDamage;
                                     e.bulletList[i].isVisible = false;
                                 }
@@ -135,6 +137,7 @@ namespace Kasper_s_Little_Journey
                             //check if homework is colliding with KasperHead, if they are... set isVisible to false(remove them from homerworkList
                             if (h.boundingBox.Intersects(p.boundingBox))
                             {
+                                sm.playerHitSound.Play();
                                 p.health -= 20;
                                 h.isVisible = false;
                             }

@@ -18,6 +18,7 @@ namespace Kasper_s_Little_Journey
 		public SoundEffect enemyHitSound;
 		public SoundEffect playerHitSound;
 		public Song bgMusic;
+        public Song menuMusic;
 
 		// Constructor
 		public SoundManager()
@@ -26,6 +27,7 @@ namespace Kasper_s_Little_Journey
 			enemyHitSound = null;
 			playerHitSound = null;
 			bgMusic = null;
+            menuMusic = null;
 		}
 
 		public void LoadContent(ContentManager Content)
@@ -34,6 +36,7 @@ namespace Kasper_s_Little_Journey
 			enemyHitSound = Content.Load<SoundEffect>("enemyHitSound");
 			playerHitSound = Content.Load<SoundEffect>("playerHitSound");
 			bgMusic = Content.Load<Song>("theme");
+            menuMusic = Content.Load<Song>("ThinkingWheel");
 		}
 	}
 }

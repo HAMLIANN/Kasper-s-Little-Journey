@@ -188,3 +188,9 @@
 /processorParam:TextureFormat=Color
 /build:gameover1.png
 
+#begin ThinkingWheel.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:ThinkingWheel.mp3
+
