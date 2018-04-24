@@ -11,10 +11,19 @@ namespace Kasper_s_Little_Journey
 	//Main
     public class Game1 : Game
     {
+        // State Enum
+        public enum State
+        {
+            Menu,
+            Playing,
+            Gameover
+        }
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 		Random random = new Random();
 		public int enemyBulletDamage;
+        public Texture2D menuImage;
+        public Texture2D gameoverImage;
 
 		// list
 		List<Homework> homeworkList = new List<Homework>();
@@ -26,6 +35,8 @@ namespace Kasper_s_Little_Journey
 		HUD hud = new HUD();
 		SoundManager sm = new SoundManager();
 
+        //Set first State
+        State gameState = State.Menu;
 
 		public Game1()
         {
@@ -36,6 +47,8 @@ namespace Kasper_s_Little_Journey
 			this.Window.Title = "Kasper´s Little Journey";
             Content.RootDirectory = "Content";
 			enemyBulletDamage = 10;
+            menuImage = null;
+            gameoverImage = null;
         }
 
 		//Initialize
@@ -53,7 +66,8 @@ namespace Kasper_s_Little_Journey
 			bg.LoadContent(Content);
 			hud.LoadContent(Content);
 			sm.LoadContent(Content);
-			MediaPlayer.Play(sm.bgMusic);
+            menuImage = Content.Load<Texture2D>("MENUIMAGES");
+            gameoverImage = Content.Load<Texture2D>("gameover1");
         }
 		
 		//UnloadContent
@@ -65,81 +79,129 @@ namespace Kasper_s_Little_Journey
 		//Update
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.X))
                 Exit();
 
-			//updating enemy
-			foreach (Enemy e in enemyList)
-			{
-				//check if enemyship is colliding with player
-				if (e.boundingBox.Intersects(p.boundingBox))
-				{
-					p.health -= 40;
-					e.isVisible = false;
-				}
+            //UPDATING PLAYING STATE
+            switch (gameState)
+            {
+                case State.Playing:
+                    {
+                       
+                        bg.speed = 5;
+                        //updating enemy
+                        foreach (Enemy e in enemyList)
+                        {
+                            //check if enemyship is colliding with player
+                            if (e.boundingBox.Intersects(p.boundingBox))
+                            {
+                                p.health -= 40;
+                                e.isVisible = false;
+                            }
 
-				//check enemy bullet collision with player ship
-				for (int i = 0; i < e.bulletList.Count; i++)
-				{
-					if (p.boundingBox.Intersects(e.bulletList[i].boundingBox))
-					{
-                        sm.playerHitSound.Play();
-						p.health -= enemyBulletDamage;
-						e.bulletList[i].isVisible = false;
-					}
-				}
+                            //check enemy bullet collision with player ship
+                            for (int i = 0; i < e.bulletList.Count; i++)
+                            {
+                                if (p.boundingBox.Intersects(e.bulletList[i].boundingBox))
+                                {
+                                    p.health -= enemyBulletDamage;
+                                    e.bulletList[i].isVisible = false;
+                                }
+                            }
 
-				//check player bullet collision to enemy 
-				for (int i = 0; i < p.bulletList.Count; i++)
-				{
-					if (p.bulletList[i].boundingBox.Intersects(e.boundingBox))
-					{
-						sm.enemyHitSound.Play();
-						explosionList.Add(new Explosion(Content.Load<Texture2D>("Explosions"), new Vector2(e.position.X, e.position.Y)));
-						p.bulletList[i].isVisible = false;
-						e.isVisible = false;
-						hud.playerScore += 20;
-					}
-				}
+                            //check player bullet collision to enemy 
+                            for (int i = 0; i < p.bulletList.Count; i++)
+                            {
+                                if (p.bulletList[i].boundingBox.Intersects(e.boundingBox))
+                                {
+                                    sm.enemyHitSound.Play();
+                                    explosionList.Add(new Explosion(Content.Load<Texture2D>("Explosions"), new Vector2(e.position.X, e.position.Y)));
+                                    p.bulletList[i].isVisible = false;
+                                    e.isVisible = false;
+                                    hud.playerScore += 20;
+                                }
+                            }
 
-				e.Update(gameTime);
-			}
-			foreach (Explosion ex in explosionList)
-			{
-				ex.Update(gameTime);
-			}
-			//for each homework in homeworkList, update it and check for collisions
-			foreach (Homework h in homeworkList)
-			{
+                            e.Update(gameTime);
+                        }
+                        foreach (Explosion ex in explosionList)
+                        {
+                            ex.Update(gameTime);
+                        }
+                        //for each homework in homeworkList, update it and check for collisions
+                        foreach (Homework h in homeworkList)
+                        {
 
-				//check if homework is colliding with KasperHead, if they are... set isVisible to false(remove them from homerworkList
-				if (h.boundingBox.Intersects(p.boundingBox))
-				{
-					p.health -= 20;
-					h.isVisible = false;
-				}
+                            //check if homework is colliding with KasperHead, if they are... set isVisible to false(remove them from homerworkList
+                            if (h.boundingBox.Intersects(p.boundingBox))
+                            {
+                                p.health -= 20;
+                                h.isVisible = false;
+                            }
 
-				//Iterate through our bulletList if any  homework come in contacts with these bullet, destroyed bullet and homework
-				for (int i = 0; i < p.bulletList.Count; i++)
-				{
-					if (h.boundingBox.Intersects(p.bulletList[i].boundingBox))
-					{
-						sm.enemyHitSound.Play();
-						explosionList.Add(new Explosion(Content.Load<Texture2D>("Explosions"), new Vector2(h.position.X, h.position.Y)));
-						hud.playerScore += 5;
-						h.isVisible = false;
-						p.bulletList.ElementAt(i).isVisible = false;
-					}
-				}
+                            //Iterate through our bulletList if any  homework come in contacts with these bullet, destroyed bullet and homework
+                            for (int i = 0; i < p.bulletList.Count; i++)
+                            {
+                                if (h.boundingBox.Intersects(p.bulletList[i].boundingBox))
+                                {
+                                    sm.enemyHitSound.Play();
+                                    explosionList.Add(new Explosion(Content.Load<Texture2D>("Explosions"), new Vector2(h.position.X, h.position.Y)));
+                                    hud.playerScore += 5;
+                                    h.isVisible = false;
+                                    p.bulletList.ElementAt(i).isVisible = false;
+                                }
+                            }
 
-				h.Update(gameTime);
-			}
-			p.Update(gameTime);
-			bg.Update(gameTime);
-			ManageExplosion();
-			//hud.Update(gameTime);
-			LoadHomeWork();
-			LoadEnemies();
+                            h.Update(gameTime);
+                        }
+
+                        if (p.health <= 0)
+                        {
+                            gameState = State.Gameover; 
+                        }
+                        p.Update(gameTime);
+                        bg.Update(gameTime);
+                        ManageExplosion();
+                        //hud.Update(gameTime);
+                        LoadHomeWork();
+                        LoadEnemies();
+                        break;
+                    }
+                    //UPDATING MENU STATE
+                case State.Menu:
+                    {
+                        KeyboardState keyState = Keyboard.GetState();
+
+                        if (keyState.IsKeyDown(Keys.Enter))
+                        {
+                            gameState = State.Playing;
+                            MediaPlayer.Play(sm.bgMusic);
+                        }
+                        bg.Update(gameTime);
+                        bg.speed = 1;
+                        break;
+                    }
+                    //UPDATING GAMEOVER STATE
+                case State.Gameover:
+                    {
+                        KeyboardState keyState = Keyboard.GetState();
+
+                        if (keyState.IsKeyDown(Keys.Escape))
+                        {
+                            p.position = new Vector2(400, 900);
+                            enemyList.Clear();
+                            homeworkList.Clear();
+                            explosionList.Clear();
+                            p.health = 200;
+                            hud.playerScore = 0;
+                            gameState = State.Menu;
+                        }
+                        MediaPlayer.Stop();
+                        break;
+                    }
+            }
+
+			
 
 			base.Update(gameTime);
         }
@@ -150,22 +212,45 @@ namespace Kasper_s_Little_Journey
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			spriteBatch.Begin();
-			bg.Draw(spriteBatch);
-			p.Draw(spriteBatch);
-			hud.Draw(spriteBatch);
-			foreach (Explosion ex in explosionList)
-			{
-				ex.Draw(spriteBatch);
-			}
-			foreach (Homework h in homeworkList)
-			{
-				h.Draw(spriteBatch);
-			}
 
-			foreach (Enemy e in enemyList)
-			{
-				e.Draw(spriteBatch);
-			}
+            switch (gameState)
+            {
+                case State.Playing:
+                    {
+                        bg.Draw(spriteBatch);
+                        p.Draw(spriteBatch);
+                        hud.Draw(spriteBatch);
+                        foreach (Explosion ex in explosionList)
+                        {
+                            ex.Draw(spriteBatch);
+                        }
+                        foreach (Homework h in homeworkList)
+                        {
+                            h.Draw(spriteBatch);
+                        }
+
+                        foreach (Enemy e in enemyList)
+                        {
+                            e.Draw(spriteBatch);
+                        }
+                        break;
+                    }
+                case State.Menu:
+                    {
+                        bg.Draw(spriteBatch);
+                        spriteBatch.Draw(menuImage, new Vector2(0, 0), Color.White); 
+                        break;
+                    }
+                case State.Gameover:
+                    {
+                        spriteBatch.Draw(gameoverImage, new Vector2(0, 0), Color.White);
+                        spriteBatch.DrawString(hud.playerScoreFont, "Your Final Score:" + hud.playerScore.ToString(), new Vector2(235, 100), Color.Red);
+                        break;
+                    }
+            }
+
+			
+	
 			spriteBatch.End();
 
             base.Draw(gameTime);
