@@ -22,6 +22,8 @@ namespace Kasper_s_Little_Journey
         SpriteBatch spriteBatch;
 		Random random = new Random();
 		public int enemyBulletDamage;
+		public int moreEnemies = 100;
+		public int enemiesCount = 3;
         public Texture2D menuImage;
         public Texture2D gameoverImage;
 
@@ -291,15 +293,16 @@ namespace Kasper_s_Little_Journey
 			int randX = random.Next(0, 700);
 
 			//if there are less than 3 enemies on the screen, then create more untill there is 5 again
-			if (enemyList.Count() < 3)
+			if (enemyList.Count() < enemiesCount)
 			{
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("EliasHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
 
 			//if there are less than 3 enemies on the screen, then create more untill there is 5 again
-			if (hud.playerScore >= 1000 && hud.playerScore <= 1020 || hud.playerScore >= 2000 && hud.playerScore <= 2020)
+			if (hud.playerScore >= moreEnemies)
 			{
-				enemyList.Add(new Enemy(Content.Load<Texture2D>("VendelaHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
+				enemiesCount = 5;
+				moreEnemies += 100;
 			}
 
 			// if any of the Enemy in the list were destroyed(or invisible), then remove them from the list
