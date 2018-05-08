@@ -29,8 +29,8 @@ namespace Kasper_s_Little_Journey
 			timer = 0f;
 			interval = 50f;
 			curFrame = 1;
-			spriteWidth = 128;
-			spriteHeight = 128;
+			spriteWidth = 60;
+			spriteHeight = 60;
 			isVisible = true;
 		}
 
