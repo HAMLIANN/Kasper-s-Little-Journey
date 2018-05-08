@@ -256,6 +256,9 @@ namespace Kasper_s_Little_Journey
 						bg.Draw(spriteBatch);
 						spriteBatch.Draw(gameoverImage, new Vector2(0, 0), Color.White);
                         spriteBatch.DrawString(hud.playerScoreFont, "Your Final Score:" + hud.playerScore.ToString(), new Vector2(320, 100), Color.Red);
+						moreEnemies = 500;
+						homeWorkCount = 5;
+						enemiesCount = 3;
                         break;
                     }
             }
