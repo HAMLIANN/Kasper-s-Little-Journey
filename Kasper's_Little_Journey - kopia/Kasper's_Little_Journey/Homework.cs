@@ -46,31 +46,26 @@ namespace Kasper_s_Little_Journey
 		{
 			if (isVisible)
 			{
-				spriteBatch.Draw(texture, position, /*null,*/ Color.White/*, rotationAngle, origin, 1.0f, SpriteEffects.None, 0f*/);
+				spriteBatch.Draw(texture, position,Color.White);
 			}
 		}
 
 		//Update
 		public void Update(GameTime gameTime)
 		{
+			//Create random variables for X and Y axis of HomeWork
+			int randomY = random.Next(-600, -50);
+			int randomX = random.Next(0, 700);
+
 			//Set Bounding box for collision
 			boundingBox = new Rectangle((int)position.X, (int)position.Y, 65, 65);
-
-			//origin.X = texture.Width / 2;
-			//origin.Y = texture.Height / 2;
 
 			//Update movement
 			position.Y += speed;
 			if (position.Y >= 950)
 			{
-				position.Y = -50;
+				position = new Vector2(randomX, randomY);
 			}
-
-			////Rotate Homework
-			//float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-			//rotationAngle += elapsed;
-			//float circle = MathHelper.Pi * 2;
-			//rotationAngle = rotationAngle % circle;
 		}
 	}
 }

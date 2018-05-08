@@ -19,6 +19,7 @@ namespace Kasper_s_Little_Journey
 		public int health, speed, bulletDelay, currentDiffiultyLevel;
 		public bool isVisible;
 		public List<Bullet> bulletList;
+		Random random = new Random();
 
 		//Constructor
 		public Enemy(Texture2D newTexture, Vector2 newPosition, Texture2D newbulletTexture)
@@ -32,10 +33,15 @@ namespace Kasper_s_Little_Journey
 			bulletDelay = 40;
 			speed = 5;
 			isVisible = true;
+			
 		}
 		//Update
 		public void Update(GameTime gameTime)
 		{
+			//Create random variables for X and Y axis of HomeWork
+			int randomY = random.Next(-600, -50);
+			int randomX = random.Next(0, 700);
+
 			//update collision rectangle
 			boundingBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
@@ -45,7 +51,8 @@ namespace Kasper_s_Little_Journey
 			// move enemy back to top of screen if it fly's off screen
 			if (position.Y >= 950)
 			{
-				position.Y = -75;
+				position = new Vector2(randomX, randomY);
+				
 			}
 
 			EnemyShoot();

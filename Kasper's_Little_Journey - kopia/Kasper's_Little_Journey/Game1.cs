@@ -24,7 +24,8 @@ namespace Kasper_s_Little_Journey
 		public int enemyBulletDamage;
 		public int moreEnemies = 500;
 		public int enemiesCount = 3;
-        public Texture2D menuImage;
+		public int homeWorkCount = 5;
+		public Texture2D menuImage;
         public Texture2D gameoverImage;
 
 		// list
@@ -252,8 +253,9 @@ namespace Kasper_s_Little_Journey
                     }
                 case State.Gameover:
                     {
-                        spriteBatch.Draw(gameoverImage, new Vector2(0, 0), Color.White);
-                        spriteBatch.DrawString(hud.playerScoreFont, "Your Final Score:" + hud.playerScore.ToString(), new Vector2(235, 100), Color.Red);
+						bg.Draw(spriteBatch);
+						spriteBatch.Draw(gameoverImage, new Vector2(0, 0), Color.White);
+                        spriteBatch.DrawString(hud.playerScoreFont, "Your Final Score:" + hud.playerScore.ToString(), new Vector2(320, 100), Color.Red);
                         break;
                     }
             }
@@ -273,11 +275,17 @@ namespace Kasper_s_Little_Journey
 			int randX = random.Next(0, 700);
 
 			//if there are less than 5 homework on the screen, then create more untill there is 5 again
-			if (homeworkList.Count() < 5)
+			if (homeworkList.Count() < homeWorkCount)
 			{
 				homeworkList.Add(new Homework(Content.Load<Texture2D>("HomeWork"), new Vector2(randX, randY)));
 			}
 
+			//after every 500 points add 1 more homework
+			if (hud.playerScore >= moreEnemies)
+			{
+				homeWorkCount += 1;
+				moreEnemies += 500;
+			}
 			// if any of the homeworks in the list were destroyed(or invisible), then remove them from the list
 			for (int i = 0; i < homeworkList.Count; i++)
 			{
@@ -302,7 +310,7 @@ namespace Kasper_s_Little_Journey
 				enemyList.Add(new Enemy(Content.Load<Texture2D>("EliasHead"), new Vector2(randX, randY), Content.Load<Texture2D>("EnemyPen")));
 			}
 
-			//if there are less than 3 enemies on the screen, then create more untill there is 5 again
+			//after every 500 points add 1 more enemy
 			if (hud.playerScore >= moreEnemies)
 			{
 				enemiesCount += 1;
