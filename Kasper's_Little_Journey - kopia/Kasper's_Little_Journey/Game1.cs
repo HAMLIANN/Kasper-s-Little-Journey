@@ -22,7 +22,7 @@ namespace Kasper_s_Little_Journey
         SpriteBatch spriteBatch;
 		Random random = new Random();
 		public int enemyBulletDamage;
-		public int moreEnemies = 100;
+		public int moreEnemies = 1000;
 		public int enemiesCount = 3;
         public Texture2D menuImage;
         public Texture2D gameoverImage;
@@ -305,8 +305,8 @@ namespace Kasper_s_Little_Journey
 			//if there are less than 3 enemies on the screen, then create more untill there is 5 again
 			if (hud.playerScore >= moreEnemies)
 			{
-				enemiesCount = 5;
-				moreEnemies += 100;
+				enemiesCount += 1;
+				moreEnemies += 1000;
 			}
 
 			// if any of the Enemy in the list were destroyed(or invisible), then remove them from the list
