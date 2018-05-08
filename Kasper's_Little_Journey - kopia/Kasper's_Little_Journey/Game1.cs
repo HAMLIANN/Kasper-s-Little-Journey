@@ -56,6 +56,8 @@ namespace Kasper_s_Little_Journey
         {
 
             base.Initialize();
+            
+            MediaPlayer.Play(sm.menuMusic);
         }
 
 		//LoadContent
@@ -188,6 +190,8 @@ namespace Kasper_s_Little_Journey
                 case State.Gameover:
                     {
                         KeyboardState keyState = Keyboard.GetState();
+                        
+                        MediaPlayer.Play(sm.menuMusic);
 
                         if (keyState.IsKeyDown(Keys.Escape))
                         {
@@ -199,7 +203,7 @@ namespace Kasper_s_Little_Journey
                             hud.playerScore = 0;
                             gameState = State.Menu;
                         }
-                        MediaPlayer.Stop();
+                        
                         break;
                     }
             }
