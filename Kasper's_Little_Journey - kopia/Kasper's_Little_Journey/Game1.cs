@@ -92,7 +92,6 @@ namespace Kasper_s_Little_Journey
             {
                 case State.Playing:
                     {
-                       
                         bg.speed = 5;
                         //updating enemy
                         foreach (Enemy e in enemyList)
@@ -102,6 +101,7 @@ namespace Kasper_s_Little_Journey
                             {
                                 p.health -= 40;
                                 e.isVisible = false;
+                                sm.playerHitSound.Play();
                             }
 
                             //check enemy bullet collision with player ship
@@ -161,10 +161,9 @@ namespace Kasper_s_Little_Journey
 
                             h.Update(gameTime);
                         }
-
                         if (p.health <= 0)
                         {
-                            gameState = State.Gameover; 
+                            gameState = State.Gameover;
                         }
                         p.Update(gameTime);
                         bg.Update(gameTime);
@@ -194,7 +193,7 @@ namespace Kasper_s_Little_Journey
                         KeyboardState keyState = Keyboard.GetState();
                         
                         MediaPlayer.Play(sm.menuMusic);
-
+                        
                         if (keyState.IsKeyDown(Keys.Escape))
                         {
                             p.position = new Vector2(400, 900);
@@ -242,6 +241,7 @@ namespace Kasper_s_Little_Journey
                         {
                             e.Draw(spriteBatch);
                         }
+
                         break;
                     }
                 case State.Menu:
