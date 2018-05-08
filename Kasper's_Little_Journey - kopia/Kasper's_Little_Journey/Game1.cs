@@ -283,8 +283,7 @@ namespace Kasper_s_Little_Journey
 			//after every 500 points add 1 more homework
 			if (hud.playerScore >= moreEnemies)
 			{
-				homeWorkCount += 1;
-				moreEnemies += 500;
+				homeWorkCount++;
 			}
 			// if any of the homeworks in the list were destroyed(or invisible), then remove them from the list
 			for (int i = 0; i < homeworkList.Count; i++)
@@ -313,7 +312,7 @@ namespace Kasper_s_Little_Journey
 			//after every 500 points add 1 more enemy
 			if (hud.playerScore >= moreEnemies)
 			{
-				enemiesCount += 1;
+				enemiesCount++;
 				moreEnemies += 500;
 			}
 
