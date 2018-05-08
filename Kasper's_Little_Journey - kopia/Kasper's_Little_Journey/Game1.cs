@@ -165,6 +165,7 @@ namespace Kasper_s_Little_Journey
                         if (p.health <= 0)
                         {
                             gameState = State.Gameover;
+                            MediaPlayer.Stop();
                             MediaPlayer.Play(sm.deathMusic);
                         }
                         p.Update(gameTime);
@@ -183,6 +184,7 @@ namespace Kasper_s_Little_Journey
                         if (keyState.IsKeyDown(Keys.Enter))
                         {
                             gameState = State.Playing;
+                            MediaPlayer.Stop();
                             MediaPlayer.Play(sm.bgMusic);
                         }
                         bg.Update(gameTime);
@@ -203,6 +205,7 @@ namespace Kasper_s_Little_Journey
                             p.health = 200;
                             hud.playerScore = 0;
                             gameState = State.Menu;
+                            MediaPlayer.Stop();
                             MediaPlayer.Play(sm.menuMusic);
                         }
                         

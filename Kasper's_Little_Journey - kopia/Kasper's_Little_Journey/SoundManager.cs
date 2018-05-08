@@ -39,7 +39,7 @@ namespace Kasper_s_Little_Journey
 			playerHitSound = Content.Load<SoundEffect>("playerHitSound");
 			bgMusic = Content.Load<Song>("theme");
             menuMusic = Content.Load<Song>("ThinkingWheel");
-            deathMusic = Content.Load<Song>("BlackHoleNeedingSpace");
+            deathMusic = Content.Load<Song>("Marooned");
 		}
 	}
 }
